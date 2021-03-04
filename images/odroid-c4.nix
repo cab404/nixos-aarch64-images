@@ -6,20 +6,14 @@
 }:
 
 let
-  idbloaderOffset = 64; # 0x40
-  ubootOffset = 16384; # 0x4000
-  # at the time of writing: 461K, let's very safe security margin of 8mb
-  ubootSize = 16384; # 8mb
+  # https://wiki.odroid.com/odroid-c4/software/partition_table
+  ubootOffset = 512; # 1 block
+  ubootSize = 512 * 2048; # 1M worth of blocks 
 in buildImage {
   config = {
     imports = [ extraConfig ];
     format = "gpt";
     partitions = {
-      idbloader = {
-        source = "${uboot}/idbloader.img";
-        size = ubootOffset - idbloaderOffset;
-        start = idbloaderOffset;
-      };
       uboot = {
         source = "${uboot}/u-boot.itb";
         size = ubootSize;
